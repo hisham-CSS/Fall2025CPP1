@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 //This will be attached to the player gameobject to control its movement
 public class PlayerController : MonoBehaviour
@@ -17,7 +18,8 @@ public class PlayerController : MonoBehaviour
     //public Transform groundCheck;
     Rigidbody2D rb;
     Collider2D col;
-
+    SpriteRenderer sr;
+    Animator anim;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,6 +27,8 @@ public class PlayerController : MonoBehaviour
         //get the Rigidbody2D component attached to the same gameobject - we assume that it exists
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 
         groundLayer = LayerMask.GetMask("Ground");
 
@@ -45,14 +49,32 @@ public class PlayerController : MonoBehaviour
 
         //grab our horizontal input value - negative button is moving to the left (A/Left Arrow), positive button is moving to the right (D/Right Arrow) - cross platform compatible so it works with keyboard, joystick, etc. -1 to 1 range where zero means no input
         float hValue = Input.GetAxis("Horizontal");
+        SpriteFlip(hValue);
 
         //set the rigidbody's horizontal velocity based on the input value multiplied by our speed - vertical velocity remains unchanged
         rb.linearVelocityX = hValue * speed;
 
         if (Input.GetButtonDown("Jump") && isGrounded)
-        {             
+        {
             //apply an upward force to the rigidbody when the jump button is pressed
             rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
         }
+
+        //update animator parameters
+        anim.SetFloat("hValue", Mathf.Abs(hValue));
+        anim.SetBool("isGrounded", isGrounded);
+    }
+
+    private void SpriteFlip(float hValue)
+    {
+        //we can use the (hValue < 0) expression to set flipX directly - hValue is negative when moving left, so flipX should be true
+        if (hValue != 0)
+            sr.flipX = (hValue < 0);
+
+        //flip the sprite based on the direction we are moving - flipX is true when the sprite is facing left
+        //if (sr.flipX && hValue > 0 || !sr.flipX && hValue < 0)
+        //{
+        //    sr.flipX = !sr.flipX;
+        //}
     }
 }
