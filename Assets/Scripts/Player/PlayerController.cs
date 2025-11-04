@@ -1,7 +1,8 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 //This will be attached to the player gameobject to control its movement
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
     //control variables
@@ -9,10 +10,6 @@ public class PlayerController : MonoBehaviour
     public float speed = 10f;
     public float groundCheckRadius = 0.02f;
     private bool isGrounded = false;
-    private Vector2 groundCheckPos => new Vector2(col.bounds.center.x, col.bounds.min.y);
-
-    //layer mask to identify what is ground
-    private LayerMask groundLayer;
 
     //Component references
     //public Transform groundCheck;
@@ -20,6 +17,7 @@ public class PlayerController : MonoBehaviour
     Collider2D col;
     SpriteRenderer sr;
     Animator anim;
+    GroundCheck groundCheck;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -30,7 +28,7 @@ public class PlayerController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
 
-        groundLayer = LayerMask.GetMask("Ground");
+        groundCheck = new GroundCheck(col, LayerMask.GetMask("Ground"), groundCheckRadius);
 
         //Transform based ground check setup - using an empty gameobject as a child of the player to define the ground check position
         //initalize ground check poositon using separate gameobject as a child of the player
@@ -45,10 +43,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, groundLayer);
+        isGrounded = groundCheck.CheckIsGrounded();
 
         //grab our horizontal input value - negative button is moving to the left (A/Left Arrow), positive button is moving to the right (D/Right Arrow) - cross platform compatible so it works with keyboard, joystick, etc. -1 to 1 range where zero means no input
         float hValue = Input.GetAxis("Horizontal");
+        float vValue = Input.GetAxisRaw("Vertical");
         SpriteFlip(hValue);
 
         //set the rigidbody's horizontal velocity based on the input value multiplied by our speed - vertical velocity remains unchanged
@@ -60,10 +59,17 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
         }
 
+        if (Input.GetButtonDown("Fire1") && isGrounded && hValue == 0)
+        {
+            anim.SetTrigger("Fire");
+        }
+
         //update animator parameters
         anim.SetFloat("hValue", Mathf.Abs(hValue));
         anim.SetBool("isGrounded", isGrounded);
     }
+
+    private void OnValidate() => groundCheck?.UpdateGroundCheckRadius(groundCheckRadius);
 
     private void SpriteFlip(float hValue)
     {
@@ -76,5 +82,30 @@ public class PlayerController : MonoBehaviour
         //{
         //    sr.flipX = !sr.flipX;
         //}
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+
     }
 }
