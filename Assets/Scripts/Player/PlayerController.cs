@@ -5,19 +5,32 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
+    #region Control Vars
     //control variables
     //a speed value that will control how fast the player moves horizontally
     public float speed = 10f;
+    public float initalPowerUpTimer = 5f;
+    public float jumpForce = 10f;
     public float groundCheckRadius = 0.02f;
+    public int maxLives = 10;
+    private int _lives = 5;
     private bool isGrounded = false;
+    #endregion
 
+    #region Component Ref
     //Component references
-    //public Transform groundCheck;
-    Rigidbody2D rb;
-    Collider2D col;
-    SpriteRenderer sr;
-    Animator anim;
-    GroundCheck groundCheck;
+    private Rigidbody2D rb;
+    private Collider2D col;
+    private SpriteRenderer sr;
+    private Animator anim;
+    private GroundCheck groundCheck;
+    #endregion
+
+    #region State Vars
+    //State variables
+    private Coroutine jumpForceCoroutine = null;
+    private float jumpPowerupTimer = 0f;
+    #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,7 +69,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             //apply an upward force to the rigidbody when the jump button is pressed
-            rb.AddForce(Vector2.up * 10f, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
         if (Input.GetButtonDown("Fire1") && isGrounded && hValue == 0)
@@ -84,6 +97,7 @@ public class PlayerController : MonoBehaviour
         //}
     }
 
+    //dynamic rigidbody collides with another dynamic or static collider
     private void OnCollisionEnter2D(Collision2D collision)
     {
         
@@ -94,11 +108,14 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-
+        Debug.Log("Collided With: " + collision.gameObject.name);
     }
+    //dynamic rigidbody collides with another dynamic or static collider
+
+    //These functions are called when a trigger collider is entered, stayed in, or exited - they don't really have any limits on what they can interact with
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        Destroy(collision.gameObject);
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -108,4 +125,82 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+
+    #region Powerup Functions
+    public void ApplyJumpForcePowerup()
+    {
+        if (jumpForceCoroutine != null)
+        {
+            StopCoroutine(jumpForceCoroutine);
+            jumpForceCoroutine = null;
+            jumpForce = 7;
+        }
+
+        jumpForceCoroutine = StartCoroutine(JumpForceChange());
+    }
+
+    System.Collections.IEnumerator JumpForceChange()
+    {
+        jumpPowerupTimer = initalPowerUpTimer + jumpPowerupTimer;
+        jumpForce = 10;
+
+        while (jumpPowerupTimer > 0)
+        {
+            jumpPowerupTimer -= Time.deltaTime;
+            Debug.Log("Jump Powerup Timer: " + jumpPowerupTimer);
+            yield return null;
+        }
+
+        jumpForce = 7;
+        jumpForceCoroutine = null;
+        jumpPowerupTimer = 0;
+    }
+    #endregion
+
+    #region Getters And Setters
+    public int lives
+    {
+        get => _lives;
+        set
+        {
+            if (value < 0)
+            {
+                GameOver();
+                return;
+            }
+
+            if (value > maxLives)
+            {
+                _lives = maxLives;
+            }
+            else
+            {
+                _lives = value;
+            }
+
+            Debug.Log($"Life value has changed to {_lives}");
+        }
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("GameOver!");
+    }
+
+    //C++ way of doing getters and setters
+    //public int GetLives() { return lives; }
+    //public void SetLives(int value)
+    //{
+    //    //if (value < 0)
+    //    //GameOver();
+
+    //    if (value > maxLives)
+    //    {
+    //        lives = maxLives;
+    //        return;
+    //    }
+
+    //    lives = value;
+    //}
+    #endregion
 }
