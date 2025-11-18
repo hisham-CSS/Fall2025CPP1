@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class SimplePickups : MonoBehaviour
-{
+{     
     public enum PickupType
     {
         Life,
