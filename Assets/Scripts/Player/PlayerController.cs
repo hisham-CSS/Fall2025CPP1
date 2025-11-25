@@ -12,8 +12,8 @@ public class PlayerController : MonoBehaviour
     public float initalPowerUpTimer = 5f;
     public float jumpForce = 10f;
     public float groundCheckRadius = 0.02f;
-    public int maxLives = 10;
-    private int _lives = 5;
+    //public int maxLives = 10;
+    //private int _lives = 5;
     private bool isGrounded = false;
     #endregion
 
@@ -163,34 +163,34 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Getters And Setters
-    public int lives
-    {
-        get => _lives;
-        set
-        {
-            if (value < 0)
-            {
-                GameOver();
-                return;
-            }
+    //public int lives
+    //{
+    //    get => _lives;
+    //    set
+    //    {
+    //        if (value < 0)
+    //        {
+    //            GameOver();
+    //            return;
+    //        }
 
-            if (value > maxLives)
-            {
-                _lives = maxLives;
-            }
-            else
-            {
-                _lives = value;
-            }
+    //        if (value > maxLives)
+    //        {
+    //            _lives = maxLives;
+    //        }
+    //        else
+    //        {
+    //            _lives = value;
+    //        }
 
-            Debug.Log($"Life value has changed to {_lives}");
-        }
-    }
+    //        Debug.Log($"Life value has changed to {_lives}");
+    //    }
+    //}
 
-    private void GameOver()
-    {
-        Debug.Log("GameOver!");
-    }
+    //private void GameOver()
+    //{
+    //    Debug.Log("GameOver!");
+    //}
 
     //C++ way of doing getters and setters
     //public int GetLives() { return lives; }

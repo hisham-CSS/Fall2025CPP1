@@ -19,7 +19,7 @@ public class SimplePickups : MonoBehaviour
             switch (pickupType)
             {
                 case PickupType.Life:
-                    pc.lives++;
+                    GameManager.Instance.lives++;
                     break;
                 case PickupType.Powerup:
                     pc.ApplyJumpForcePowerup();
