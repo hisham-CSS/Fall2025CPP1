@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public delegate void PlayerInstanceDelegate(PlayerController playerInstance);
     public event PlayerInstanceDelegate OnPlayerSpawned;
 
+    public event System.Action<int> OnLifeValueChanged;
+
     #region Singleton Pattern
     private static GameManager _instance;
     public static GameManager Instance => _instance;
@@ -50,6 +52,9 @@ public class GameManager : MonoBehaviour
             }
 
             Debug.Log($"Life value has changed to {_lives}");
+            
+            OnLifeValueChanged?.Invoke(_lives);
+            //some event to notify listeners that lives have changed?
         }
     }
     private void GameOver()
