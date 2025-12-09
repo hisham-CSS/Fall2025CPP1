@@ -53,7 +53,7 @@ public class TurretEnemy : BaseEnemy
     bool CheckDistance()
     {
         float distToPlayer = Vector3.Distance(transform.position, playerRef.transform.position);
-        Debug.Log("Distance to player: " + distToPlayer);
+        //Debug.Log("Distance to player: " + distToPlayer);
         return distToPlayer <= distThreshold;
     }    
 }

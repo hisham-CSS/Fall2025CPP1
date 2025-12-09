@@ -5,6 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
+    public AudioSource source;
+    public AudioClip jumpSFX;
+    public AudioClip stompSFX;
+
     #region Control Vars
     //control variables
     //a speed value that will control how fast the player moves horizontally
@@ -41,6 +45,8 @@ public class PlayerController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
 
+        source = GetComponent<AudioSource>();
+
         groundCheck = new GroundCheck(col, LayerMask.GetMask("Ground"), groundCheckRadius);
 
         //Transform based ground check setup - using an empty gameobject as a child of the player to define the ground check position
@@ -56,6 +62,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale == 0) return;
+
         isGrounded = groundCheck.CheckIsGrounded();
 
         //grab our horizontal input value - negative button is moving to the left (A/Left Arrow), positive button is moving to the right (D/Right Arrow) - cross platform compatible so it works with keyboard, joystick, etc. -1 to 1 range where zero means no input
@@ -72,6 +80,7 @@ public class PlayerController : MonoBehaviour
             {
                 //apply an upward force to the rigidbody when the jump button is pressed
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                source.PlayOneShot(jumpSFX);
             }
         }
         else
@@ -132,6 +141,7 @@ public class PlayerController : MonoBehaviour
             collision.GetComponentInParent<BaseEnemy>().TakeDamage(0, DamageType.JumpedOn);
             rb.linearVelocity = Vector2.zero;
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            source.PlayOneShot(stompSFX);
         }
     }
     private void OnTriggerStay2D(Collider2D collision)

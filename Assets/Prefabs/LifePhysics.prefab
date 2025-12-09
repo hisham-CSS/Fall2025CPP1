@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0045574903, y: 0.0045576394}
+  m_Offset: {x: -0.002503872, y: -0.032103807}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.6627352, y: 0.6809661}
+  m_Size: {x: 0.56628704, y: 0.5597517}
   m_EdgeRadius: 0
 --- !u!1 &4431737534276101591
 GameObject:
@@ -106,7 +106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4431737534276101591}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.111, y: 0.529, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -184,8 +184,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c3e16e6234ff9f47a4c6dc2e06894ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Life
+  sfxMixerGroup: {fileID: -3084243122923932174, guid: 7834b631c372e1b4fac4438191bcc080, type: 2}
+  pickupSound: {fileID: 8300000, guid: f9cc1b8a924d0ac4e8374733047edec4, type: 3}
   lifetime: 1
   livesToAdd: 1
+  childCollider: {fileID: 6918290162371867319}
 --- !u!61 &6606775976330988740
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -220,7 +223,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.006312132, y: 0.004208088}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -230,7 +233,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.8, y: 0.8}
+  m_Size: {x: 1.2250161, y: 1.0104041}
   m_EdgeRadius: 0
 --- !u!50 &374291818630926482
 Rigidbody2D:

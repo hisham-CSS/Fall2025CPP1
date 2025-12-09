@@ -35,10 +35,19 @@ public class CanvasManager : MonoBehaviour
             backSettingsButton.onClick.AddListener(() => SetMenus(mainMenu, settingsMenu));
 
         if (resumeButton) 
-            resumeButton.onClick.AddListener(() => SetMenus(null, pauseMenu));
+            resumeButton.onClick.AddListener(() => 
+            {
+                SetMenus(null, pauseMenu);
+                Time.timeScale = 1;
+            });
         
         if (returnToMenuButton) 
-            returnToMenuButton.onClick.AddListener(() => SceneManager.LoadScene(0));
+            returnToMenuButton.onClick.AddListener(() =>
+            {
+                Time.timeScale = 1;
+                SceneManager.LoadScene(0);
+            });
+            
 
         if (quitButton) 
             quitButton.onClick.AddListener(QuitGame);
@@ -75,10 +84,12 @@ public class CanvasManager : MonoBehaviour
             if (pauseMenu.activeSelf)
             {
                 SetMenus(null, pauseMenu);
+                Time.timeScale = 1;
                 return;
             }
 
             SetMenus(pauseMenu, null);
+            Time.timeScale = 0;
         }
 
     }

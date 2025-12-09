@@ -1,3 +1,4 @@
+using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,18 +38,19 @@ public class GameManager : MonoBehaviour
             if (value < 0)
             {
                 GameOver();
-                return;
             }
-
-            if (lives > value)
+            else if (value < _lives)
             {
                Respawn();
                _lives = value;
             }
-
-            if (value > maxLives)
+            else if (value > maxLives)
             {
                 _lives = maxLives;
+            }
+            else
+            {
+                _lives = value;
             }
 
             Debug.Log($"Life value has changed to {_lives}");
@@ -75,7 +77,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
 
     // Update is called once per frame
     void Update()

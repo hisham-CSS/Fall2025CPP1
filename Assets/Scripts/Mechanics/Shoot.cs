@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
+
+
     private SpriteRenderer sr;
+    private AudioSource source;
     [SerializeField] private Vector2 initalShotVelocity = Vector2.zero;
     [SerializeField] private Transform spawnPointRight;
     [SerializeField] private Transform spawnPointLeft;
     [SerializeField] private Projectile projectilePrefab;
+
+    
+    public AudioClip fireballSFX;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        source = GetComponent<AudioSource>();
 
         if (initalShotVelocity == Vector2.zero)
         {
@@ -37,5 +45,7 @@ public class Shoot : MonoBehaviour
             curProjectile.SetVelocity(initalShotVelocity);
             Debug.LogError("Projectile fired to the left from " + gameObject.name);
         }
+
+        source.PlayOneShot(fireballSFX);
     }
 }
