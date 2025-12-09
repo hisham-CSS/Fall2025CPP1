@@ -65,7 +65,8 @@ public class GameManager : MonoBehaviour
     }
     private void Respawn()
     {
-        playerInstance.transform.position = currentCheckpoint;
+        if (playerInstance != null)
+            playerInstance.transform.position = currentCheckpoint;
     }
     #endregion
 

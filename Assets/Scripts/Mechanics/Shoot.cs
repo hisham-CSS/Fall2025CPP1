@@ -42,7 +42,7 @@ public class Shoot : MonoBehaviour
         else
         {
             curProjectile = Instantiate(projectilePrefab, spawnPointLeft.position, Quaternion.identity);
-            curProjectile.SetVelocity(initalShotVelocity);
+            curProjectile.SetVelocity(new Vector2(-initalShotVelocity.x, initalShotVelocity.y));
             Debug.LogError("Projectile fired to the left from " + gameObject.name);
         }
 
