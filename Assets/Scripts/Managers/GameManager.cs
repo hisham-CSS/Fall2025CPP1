@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
             }
 
             Debug.Log($"Life value has changed to {_lives}");
-            
+
             OnLifeValueChanged?.Invoke(_lives);
             //some event to notify listeners that lives have changed?
         }
